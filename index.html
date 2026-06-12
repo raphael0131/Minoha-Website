@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>係咪...MINOHA之大日子啊?</title>
+
+  <link rel="stylesheet" href="style.css" />
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js" defer></script>
+
+  <script src="world.js" defer></script>
+  <script src="character.js" defer></script>
+  <script src="game.js" defer></script>
+  <script src="cake.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div id="world-bg">
+    <canvas id="world-canvas"></canvas>
+  </div>
+
+  <span class="ambient amb1">✦</span>
+  <span class="ambient amb2">✦</span>
+  <span class="ambient amb3">✦</span>
+  <span class="ambient amb4">✦</span>
+
+  <div id="progress-bar"></div>
+  <div id="stage-hud">STAGE SELECT</div>
+  <canvas id="confetti-canvas"></canvas>
+
+  <button id="music-toggle" class="music-toggle" type="button" onclick="toggleMusic()">♫ MUSIC ON</button>
+
+  <audio id="bgm" loop preload="auto">
+    <source src="bgm.mp3" type="audio/mpeg" />
+  </audio>
+
+  <!-- PAGE 0 -->
+  <section class="page active page-intro-video" id="page-0">
+    <div class="intro-video-bg">
+      <video
+        class="intro-bg-video"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+        poster="us3.jpg"
+        controls
+      >
+        <source src="us3.mp4" type="video/quicktime" />
+      </video>
+    </div>
+
+    <div class="intro-photo-overlay"></div>
+
+    <div class="intro-photo-content intro-top-center">
+      <div class="col-left-card intro-card intro-photo-card">
+        <div class="tag tag-pink">BB WHY YOU ARE HERE GEHHHHH OMGGG</div>
+
+        <div class="intro-pixel-box">
+          <div class="intro-stars">✦ ✦ ✦</div>
+          <div class="bubble"><p>halo bb(⁎⁍̴̛ᴗ⁍̴̛⁎)</p></div>
+
+          <h1>22歲<br><span class="pink-txt">HAPPY BIRTHDAY</span></h1>
+
+          <p>歡迎嚟到智智嘅遊戲世界～準備好就gogogo！未準備好都要go！ Here We Go！！！</p>
+
+          <div class="intro-mini-icons">
+            <span>🎮</span>
+            <span>💖</span>
+            <span>🌙</span>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn btn-yellow" onclick="nextPage()">START GAME</button>
+          </div>
+        </div>
+
+        <div class="score-bar" style="margin-top:24px;">
+          <div class="score-hearts"><span>♥</span><span>♥</span><span>♥</span></div>
+          <span class="mini-ui-text">對智智嘅愛仲剩餘 100%</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 1 -->
+  <section class="page" id="page-1">
+    <div class="two-col">
+      <div class="col-left">
+        <div class="col-left-card">
+          <div class="tag tag-blue">超級簡單第一關 單押easy</div>
+          <h2>智智聚會之<br>猜猜剪影遊戲</h2>
+
+          <div class="sil-lives">
+            <span>對智智嘅愛</span>
+            <div id="sil-lives-val"></div>
+          </div>
+
+          <div class="sil-q-label" id="sil-q-label">loading...</div>
+          <div class="sil-options" id="sil-options"></div>
+          <div class="sil-feedback" id="sil-feedback"></div>
+
+          <div class="btn-row" style="margin-top:22px;">
+            <button class="btn btn-ghost" onclick="prevPage()">BACK</button>
+            <button class="btn btn-yellow" id="sil-next-btn" onclick="nextPage()" disabled>NEXT</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-right">
+        <div class="sil-photo-frame">
+          <canvas id="sil-canvas"></canvas>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 2 -->
+  <section class="page" id="page-2">
+    <div class="two-col">
+      <div class="col-left">
+        <div class="col-left-card">
+          <div class="tag tag-yellow">第二關yeahhh ✌🏻</div>
+          <h2>智智聚會之<br>反枱uh nono...反牌遊戲</h2>
+          <p>開到所有 pair 就pass屎✨</p>
+
+          <div class="hp-bar-wrap" style="margin-top:18px;">
+            <span class="hp-label">PAIRS</span>
+            <div class="hp-bar">
+              <div class="hp-cell"></div><div class="hp-cell"></div><div class="hp-cell"></div><div class="hp-cell"></div>
+              <div class="hp-cell"></div><div class="hp-cell"></div><div class="hp-cell"></div><div class="hp-cell"></div>
+            </div>
+          </div>
+
+          <div class="mem-timer" id="mem-timer">0s</div>
+          <div class="mem-status" id="mem-status"></div>
+          <div class="game-complete" id="mem-complete"></div>
+
+          <div class="btn-row" style="margin-top:18px;">
+            <button class="btn btn-ghost" onclick="MEM.init()">RESTART</button>
+            <button class="btn btn-ghost" onclick="prevPage()">BACK</button>
+            <button class="btn btn-pink" id="mem-next-btn" onclick="nextPage()" disabled>NEXT STAGE</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-right">
+        <div class="memory-grid" id="memory-grid"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 3 -->
+  <section class="page" id="page-3">
+    <div class="two-col">
+      <div class="col-left">
+        <div class="col-left-card">
+          <div class="tag tag-purple">過三關嘅第三關</div>
+          <h2>智智聚會之<br>快啲講我愛佢gege</h2>
+
+          <div style="max-width:520px;">
+            <div class="type-target" id="type-target-display">我最愛智智bb!</div>
+            <input
+              class="type-input"
+              id="type-input"
+              type="text"
+              placeholder="type here..."
+              autocomplete="off"
+              autocorrect="off"
+              autocapitalize="off"
+              spellcheck="false"
+            />
+            <div class="type-status" id="type-status"></div>
+          </div>
+
+          <div class="game-complete" id="type-complete"></div>
+
+          <div class="btn-row" style="margin-top:22px;">
+            <button class="btn btn-ghost" onclick="prevPage()">BACK</button>
+            <button class="btn btn-yellow" id="blow-btn" onclick="blowCandles()">BLOW CANDLES</button>
+            <button class="btn btn-pink" id="type-next-btn" onclick="nextPage()" disabled>GOAL</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-right">
+        <canvas id="cake-canvas-3d" width="380" height="380" style="width:380px;height:380px;cursor:grab;"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 4 -->
+  <section class="page final-photo-page" id="page-4">
+    <div class="two-col">
+      <div class="col-left">
+        <div class="col-left-card">
+          <div class="tag tag-pink">玩完鳥(￣∇￣) 最後係智智對你嘅愛</div>
+          <h2>gege小麵<br>我超級超級愛你wahaahaaa!</h2>
+
+          <div class="notes-list">
+            <div class="note"><span class="note-label">智智筆記 01</span>哈皮 birthday MINOHA BB💖</div>
+            <div class="note"><span class="note-label">智智筆記 02</span>希望你日日都超happi同埋日日都掛住我 笑屎 不過幾時都係我掛住你多啲gege✨</div>
+            <div class="note"><span class="note-label">智智筆記 03</span>我今次唔講咁多鳥笑屎 不過我一直都會陪住你 同你黐黐爆 你唔準走!🌙</div>
+            <div class="note"><span class="note-label">智智筆記 04</span>以後每年嘅生日都有我陪住你過 I LOVE YOU BB!💖</div>
+            <div class="note"><span class="note-label">智智筆記 05</span>btw 我今次寫唔到好多野(T ^ T) 整呢舊野都晒左我好多時間笑屎 睇嚟我都唔夠勁 要繼續進步先得!</div>
+          </div>
+
+          <label class="upload-label" for="final-photo-input" style="margin-top:22px;">
+            <span style="font-size:2.6rem;">📸</span>
+            <span class="mini-ui-text">upload our fav photo</span>
+            <span style="font-size:1.1rem;color:var(--muted)">click to choose</span>
+          </label>
+          <input type="file" id="final-photo-input" accept="image/*" />
+
+          <div id="photo-preview">
+            <img id="photo-img" alt="our photo" loading="lazy" />
+          </div>
+
+          <div class="btn-row" style="margin-top:24px;">
+            <button class="btn btn-ghost" onclick="prevPage()">BACK</button>
+            <button
+              class="btn btn-yellow"
+              onclick="spawnBurst(innerWidth*.5, innerHeight*.4, 120);spawnBurst(innerWidth*.25,innerHeight*.5,60);spawnBurst(innerWidth*.75,innerHeight*.4,60);"
+            >
+              CELEBRATE
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-right">
+        <div style="position:relative;width:100%;min-height:460px;">
+          <div class="frames-bg">
+            <div class="photo-frame frame-1"><div class="photo-frame-empty"><span>🥰</span><p>呢個website就係我地嘅回憶</p></div></div>
+            <div class="photo-frame frame-2"><div class="photo-frame-empty"><span>✨</span><p>記錄我地嘅呢一刻</p></div></div>
+            <div class="photo-frame frame-3"><div class="photo-frame-empty"><span>🌙</span><p>我愛你小麵bb</p></div></div>
+            <div class="photo-frame frame-4"><div class="photo-frame-empty"><span>💛</span><p>永遠都要喺一齊LOVE YOU</p></div></div>
+          </div>
+
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:1;">
+            <div class="floaty" data-char="couple" style="width:270px"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <nav class="nav-dots" id="dot-nav" aria-label="Page navigation"></nav>
+</body>
+</html>
